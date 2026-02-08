@@ -6,3 +6,4 @@ venv/
 dist/
 logs/
 *.log
+app/__pycache__
