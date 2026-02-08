@@ -1,0 +1,21 @@
+from fastapi import FastAPI
+from pydantic import BaseModel
+from .rag import add_document, ask
+
+app = FastAPI()
+
+class Doc(BaseModel):
+    text: str
+
+class Question(BaseModel):
+    query: str
+
+@app.post("/add")
+def add(doc: Doc):
+    add_document(doc.text)
+    return {"status": "ok"}
+
+@app.post("/ask")
+def ask_question(q: Question):
+    answer = ask(q.query)
+    return {"answer": answer}
