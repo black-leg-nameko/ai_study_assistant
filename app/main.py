@@ -19,3 +19,14 @@ def add(doc: Doc):
 def ask_question(q: Question):
     answer = ask(q.query)
     return {"answer": answer}
+
+@app.post("/upload_pdf")
+async def upload_pdf(file: UploadFile = File(...)):
+    reader = PdfReader(file.file)
+    text = ""
+
+    for page in reader.pages:
+        text += page.extract_text() or ""
+
+    add_document(text)
+    return {"status": "pdf added", "length": len(text)}
